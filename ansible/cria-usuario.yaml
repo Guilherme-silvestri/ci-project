@@ -1,0 +1,13 @@
+- hosts:
+  become: true
+  vars:
+    - user: user_teste
+    - password: $5$1Xx/D9ocd$D96oAR9rgnTJK32JOgDkNz/K4luRaMEEJgHfvg0vEoC
+  tasks:
+    - name: "Criar usuario {{ user }}"
+      user: "{{ user }}"
+      password: "{{ password }}"
+      state: present
+      shell: "/bin/bash"
+      create_home: true
+      home: "/home/{{ user }}"
