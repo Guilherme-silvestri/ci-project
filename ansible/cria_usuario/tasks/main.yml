@@ -1,0 +1,6 @@
+---
+- name: Cria usuario SVC
+  user:
+    name: {{ svc_user }}
+    shell: /home/{{ svc_user }}
+    state: present

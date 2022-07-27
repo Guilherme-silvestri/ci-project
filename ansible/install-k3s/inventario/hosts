@@ -1,6 +1,7 @@
 [master]
 192.168.15.222
 [node]
+192.168.15.223
 [cluster_k3s:children]
 master
 node

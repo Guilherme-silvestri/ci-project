@@ -6,8 +6,14 @@
   roles:
     - role: prereq
     - role: download
+
   
 - hosts: master
   become: yes
   roles:
     - role: k3s_install/master_node
+  
+- hosts: node
+  become: yes
+  roles:
+    - role: k3s_install/worker_node

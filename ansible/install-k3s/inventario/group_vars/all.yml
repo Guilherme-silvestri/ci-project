@@ -1,7 +1,8 @@
 ---
 k3s_version: v1.22.3+k3s1
 kubectl_version: v1.24.0
-user: guilherme
+svc_user: svcacc_k3s
+ip_master: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
 systemd_dir: /etc/systemd/system
 extra_server_args: ""
 extra_agent_args: ""
