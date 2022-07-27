@@ -11,7 +11,7 @@
 - name: Download KUBECTL
   get_url:
     url: https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
-    dest: /usr/local/bin/k3s
+    dest: /usr/local/bin/kubectl
     owner: root
     group: root
     mode: 0755
