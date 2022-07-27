@@ -7,3 +7,12 @@
     group: root
     mode: 0755
   when: ansible_facts.architecture == "x86_64"
+
+- name: Download KUBECTL
+  get_url:
+    url: https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/k3s
+    owner: root
+    group: root
+    mode: 0755
+  when: ansible_facts.architecture == "x86_64"
