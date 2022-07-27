@@ -14,3 +14,16 @@
     daemon_reload: yes
     state: restarted
     enabled: yes
+
+- name: Cria diretorio KUBECONFIG
+  file:
+    path: "{{ user }}/.kube"
+    state: directory
+    mode: '0755'
+
+- name: Copia KUBECONFIG
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "{{ user }}/.kube/config"
+    owner: {{ user }}
+    mode: '0644'
