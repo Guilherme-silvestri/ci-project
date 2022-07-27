@@ -25,5 +25,5 @@
   copy:
     src: /etc/rancher/k3s/k3s.yaml
     dest: "{{ user }}/.kube/config"
-    owner: {{ user }}
+    owner: '{{ user }}'
     mode: '0644'
