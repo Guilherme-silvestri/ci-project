@@ -28,6 +28,7 @@
   file:
     path: "{{ k3s_server_location }}/server/node-token"
     mode: "0644"
+    state: file
 
 - name: Read node-token from master
   slurp:
