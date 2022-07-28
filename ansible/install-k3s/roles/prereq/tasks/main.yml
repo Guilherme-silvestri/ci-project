@@ -1,4 +1,8 @@
 ---
+- name: Instala sshpass
+  package:
+    name: sshpass
+    
 - name: Desativa SELinux
   selinux:
     state: disabled
