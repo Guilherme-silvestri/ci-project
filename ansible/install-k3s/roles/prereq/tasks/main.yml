@@ -1,8 +1,9 @@
 ---
-- name: Instala sshpass
-  package:
+- name: Instala sshpass 'Ubuntu'
+  apt:
     name: sshpass
-    
+    state: latest
+
 - name: Desativa SELinux
   selinux:
     state: disabled
