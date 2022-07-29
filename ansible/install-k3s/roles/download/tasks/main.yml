@@ -8,17 +8,3 @@
     mode: 0755
   when: ansible_facts.architecture == "x86_64"
 
-- name: Download KUBECTL
-  get_url:
-    url: https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
-    dest: /usr/local/bin/kubectl
-    owner: root
-    group: root
-    mode: 0755
-  when: ansible_facts.architecture == "x86_64"
-
-- name: Instalar HELM Master
-  unarchive:
-    src: https://get.helm.sh/helm-v3.9.2-linux-amd64.tar.gz
-    dest: /usr/local/bin
-    remote_src: yes
