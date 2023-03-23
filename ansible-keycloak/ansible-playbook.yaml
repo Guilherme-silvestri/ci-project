@@ -14,4 +14,4 @@
 
     - name: Print the jwt token
       debug:
-        var: login_response.stdout
+        var: (login_response.stdout|from_json).access_token
