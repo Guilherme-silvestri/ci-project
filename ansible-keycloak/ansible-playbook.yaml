@@ -22,5 +22,10 @@
         headers:
           Content-Type: "application/x-www-form-urlencoded"
         return_content: yes
+      register: token_response
+
+    - name: Mostrar token de acesso
+      debug:
+        var: token_response.json.access_token
 
         
