@@ -20,4 +20,4 @@
           password: "{{ admin_password }}"
           client_id: "admin-cli"
         validate_certs: no
-        register: keycloak_token
+
