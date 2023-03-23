@@ -18,9 +18,6 @@
           username: "{{ keycloak_admin_username }}"
           password: "{{ keycloak_admin_password }}"
           grant_type: password
-        validate_certs: no
-        headers:
-          Content-Type: "application/x-www-form-urlencoded"
       register: keycloak_auth_result
 
     - name: Verificar resposta
