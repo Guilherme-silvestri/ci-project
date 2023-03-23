@@ -8,28 +8,21 @@
     realm_enabled: true
     realm_display_name: "TESTE-DEVOPS"
   tasks:
-    - name: Obter token de acesso do administrador
+    - name: Create realm in Keycloak
       uri:
-        url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
+        url: "https://{{ keycloak_host }}/auth/admin/realms"
         method: POST
-        body_format: json
-        body:
-          grant_type: "password"
-          username: "{{ keycloak_admin_username }}"
-          password: "{{ keycloak_admin_password }}"
-          client_id: "admin-cli"
-        validate_certs: false
-        register: keycloak_token
-    - name: Criar realm
-      uri:
-        url: "{{ keycloak_url }}/admin/realms"
-        method: POST
-        headers:
-          Authorization: "Bearer {{ keycloak_token.json.access_token }}"
+        user: "{{ keycloak_admin_username }}"
+        password: "{{ keycloak_admin_password }}"
+        force_basic_auth: yes
+        validate_certs: no
+        status_code: 201
         body_format: json
         body:
           realm: "{{ realm_name }}"
-          enabled: "{{ realm_enabled }}"
-          displayName: "{{ realm_display_name }}"
-        validate_certs: false
-        status_code: 201
+          enabled: true
+      register: response
+
+    - name: Print response
+      debug:
+        var: response
