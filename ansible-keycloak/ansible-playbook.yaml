@@ -1,71 +1,35 @@
----
-- name: Teste de login no Keycloak
+- name: Criar realm no Keycloak via REST API
   hosts: localhost
-  collections:
-    - middleware_automation.keycloak
-  gather_facts: no
-
   vars:
-    realm_name: GUILHERME
-    keycloak_url: https://dev-sso.dmcardapi.com.br/auth
-    admin_username: admin
-    admin_password: aHT7dbw57M3MRFCC
-
+    keycloak_url: "https://dev-sso.dmcardapi.com.br/auth"
+    keycloak_admin_username: "admin"
+    keycloak_admin_password: "aHT7dbw57M3MRFCC"
+    realm_name: "TESTE-DEVOPS"
+    realm_enabled: true
+    realm_display_name: "TESTE-DEVOPS"
   tasks:
-    - name: Create Keycloak realm
-      keycloak_realm:
-        auth_url: "{{ keycloak_url }}"
-        realm_name: "{{ realm_name }}"
-        username: "{{ admin_username }}"
-        password: "{{ admin_password }}"
-        state: present
-
-    - name: Add Keycloak users
-      keycloak_user:
-        auth_url: "{{ keycloak_url }}"
-        realm_name: "{{ realm_name }}"
-        username: "{{ admin_username }}"
-        password: "{{ admin_password }}"
-        firstname: Guilherme 
-        lastname: silvestri
-        email: guilherme.silvestri@vocedm.com.br
-        enabled: yes
-        state: present
-
-    - name: Add Keycloak roles
-      keycloak_role:
-        auth_url: "{{ keycloak_url }}"
-        realm_name: "{{ realm_name }}"
-        username: "{{ admin_username }}"
-        password: "{{ admin_password }}"
-        name: admin
-        state: present
-
-    - name: Add Keycloak role mappings
-      keycloak_role_mapping:
-        auth_url: "{{ keycloak_url }}"
-        realm_name: "{{ realm_name }}"
-        username: "{{ admin_username }}"
-        password: "{{ admin_password }}"
-        user: guilherme.silvestri@vocedm.com.br
-        roles:
-          - admin
-        state: present
-
-    - name: Check Keycloak realm configuration
+    - name: Obter token de acesso do administrador
       uri:
-        url: "{{ keycloak_url }}/admin/realms/{{ realm_name }}"
-        method: GET
-        user: "{{ admin_username }}"
-        password: "{{ admin_password }}"
-        return_content: yes
-        status_code: 200
+        url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
+        method: POST
         body_format: json
-      register: realm_config
-
-    - name: Validate Keycloak realm configuration
-      assert:
-        that:
-          - realm_name in realm_config.json['realm']
-        success_msg: "Keycloak realm configuration was successful"
-        fail_msg: "Keycloak realm configuration failed"
+        body:
+          grant_type: "password"
+          username: "{{ keycloak_admin_username }}"
+          password: "{{ keycloak_admin_password }}"
+          client_id: "admin-cli"
+        validate_certs: false
+        register: keycloak_token
+    - name: Criar realm
+      uri:
+        url: "{{ keycloak_url }}/admin/realms"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ keycloak_token.json.access_token }}"
+        body_format: json
+        body:
+          realm: "{{ realm_name }}"
+          enabled: "{{ realm_enabled }}"
+          displayName: "{{ realm_display_name }}"
+        validate_certs: false
+        status_code: 201
