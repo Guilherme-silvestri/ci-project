@@ -4,9 +4,9 @@
   gather_facts: no
 
   vars:
-    keycloak_url: "https://exemplo.com/auth/realms/Exemplo"
-    username: "seu_usuario"
-    password: "sua_senha"
+    keycloak_url: "https://dev-sso.dmcardapi.com.br/auth/realms/teste"
+    username: "admin"
+    password: "aHT7dbw57M3MRFCC"
 
   tasks:
   - name: Fazer login no Keycloak
