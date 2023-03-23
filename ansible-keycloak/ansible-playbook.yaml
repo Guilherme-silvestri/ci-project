@@ -1,24 +1,27 @@
----
-- name: Criar realm no Keycloak via REST API
+- name: Autenticar e obter token de acesso do Keycloak
   hosts: localhost
+  gather_facts: false
+
   vars:
-    keycloak_host: "https://dev-sso.dmcardapi.com.br"
-    keycloak_admin_username: "admin"
-    keycloak_admin_password: "aHT7dbw57M3MRFCC"
-    realm_name: "TESTE-DEVOPS"
-    master_realm: master
-    realm_enabled: true
-    realm_display_name: "TESTE-DEVOPS"
+    keycloak_url: "https://dev-sso.dmcardapi.com.br/admin/realms/master/protocol/openid-connect/token"
+
+    username: "admin"
+    password: "aHT7dbw57M3MRFCC"
+
   tasks:
-  - name: Obter token de acesso
-    get_url:
-      url: "{{ keycloak_host }}/admin/realms/{{ master_realm }}/protocol/openid-connect/token"
-      method: POST
-      headers:
-        'Content-Type': 'application/x-www-form-urlencoded'
-      validate_certs: no
-      data:
-        grant_type: password
-        username: "{{ keycloak_admin_username }}"
-        password: "{{ keycloak_admin_password }}"
-    register: token_result
+    - name: Obter token de acesso
+      get_url:
+        url: "{{ keycloak_url }}"
+        method: POST
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+        validate_certs: false
+        data:
+          grant_type: "password"
+          username: "{{ username }}"
+          password: "{{ password }}"
+      register: response
+
+    - name: Mostrar resposta
+      debug:
+        var: response.json()['access_token']
