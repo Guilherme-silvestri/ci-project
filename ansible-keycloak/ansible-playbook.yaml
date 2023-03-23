@@ -4,23 +4,66 @@
   gather_facts: no
 
   vars:
-    keycloak_url: "https://dev-sso.dmcardapi.com.br/auth/realms/teste"
-    username: "admin"
-    password: "aHT7dbw57M3MRFCC"
+    realm_name: GUILHERME
+    keycloak_url: https://dev-sso.dmcardapi.com.br/auth
+    admin_username: admin
+    admin_password: aHT7dbw57M3MRFCC
 
   tasks:
-  - name: Fazer login no Keycloak
-    uri:
-      url: "{{ keycloak_url }}/protocol/openid-connect/token"
-      method: POST
-      body_format: json
-      headers:
-        Content-Type: "application/x-www-form-urlencoded"
-      body:
-        grant_type: "password"
-        client_id: "nome_do_cliente"
-        username: "{{ username }}"
-        password: "{{ password }}"
-      validate_certs: no
-      status_code: 200
-    register: resultado
+    - name: Create Keycloak realm
+      keycloak_realm:
+        auth_url: "{{ keycloak_url }}"
+        realm_name: "{{ realm_name }}"
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        state: present
+
+    - name: Add Keycloak users
+      keycloak_user:
+        auth_url: "{{ keycloak_url }}"
+        realm_name: "{{ realm_name }}"
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        firstname: Guilherme 
+        lastname: silvestri
+        email: guilherme.silvestri@vocedm.com.br
+        enabled: yes
+        state: present
+
+    - name: Add Keycloak roles
+      keycloak_role:
+        auth_url: "{{ keycloak_url }}"
+        realm_name: "{{ realm_name }}"
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        name: admin
+        state: present
+
+    - name: Add Keycloak role mappings
+      keycloak_role_mapping:
+        auth_url: "{{ keycloak_url }}"
+        realm_name: "{{ realm_name }}"
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        user: guilherme.silvestri@vocedm.com.br
+        roles:
+          - admin
+        state: present
+
+    - name: Check Keycloak realm configuration
+      uri:
+        url: "{{ keycloak_url }}/admin/realms/{{ realm_name }}"
+        method: GET
+        user: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        return_content: yes
+        status_code: 200
+        body_format: json
+      register: realm_config
+
+    - name: Validate Keycloak realm configuration
+      assert:
+        that:
+          - realm_name in realm_config.json['realm']
+        success_msg: "Keycloak realm configuration was successful"
+        fail_msg: "Keycloak realm configuration failed"
