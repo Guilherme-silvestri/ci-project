@@ -10,7 +10,7 @@
   tasks:
     - name: Criar realm
       uri:
-        url: "{{ keycloak_host }}/admin/realms/master/protocol/openid-connect/token"
+        url: "{{ keycloak_host }}/realms/master/protocol/openid-connect/token"
         method: POST
         body_format: json
         body:
