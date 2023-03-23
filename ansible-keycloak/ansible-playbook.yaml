@@ -6,6 +6,7 @@
     keycloak_url: "https://dev-sso.dmcardapi.com.br/auth"
     admin_username: "admin"
     admin_password: "aHT7dbw57M3MRFCC"
+    realm_name: "TESTE-DEVOPS"
 
   tasks:
     - name: Obter token de acesso
@@ -14,7 +15,7 @@
         method: POST
         headers:
           Content-Type: "application/x-www-form-urlencoded"
-        body:
+        data:
           grant_type: "password"
           client_id: "admin-cli"
           username: "{{ admin_username }}"
