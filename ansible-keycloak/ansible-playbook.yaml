@@ -11,7 +11,7 @@
   tasks:
     - name: Autenticação no Keycloak
       uri:
-        url: "{{ keycloak_host }}/realms/master/protocol/openid-connect/token"
+        url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
         method: POST
         body_format: json
         body:
