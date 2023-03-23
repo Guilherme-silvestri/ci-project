@@ -10,5 +10,7 @@
   tasks:
     - name: Criar realm
       shell: "curl   -d 'client_id=admin-cli'   -d 'username=admin'   -d 'password=aHT7dbw57M3MRFCC'   -d grant_type=password   'https://dev-sso.dmcardapi.com.br/realms/master/protocol/openid-connect/token'"
-
-
+      register: login_response
+    - name: Print the jwt token
+      debug:
+        var: (login_response.stdout|from_json).jwt   
