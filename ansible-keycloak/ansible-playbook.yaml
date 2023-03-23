@@ -8,9 +8,10 @@
     realm_enabled: true
     realm_display_name: "TESTE-DEVOPS"
   tasks:
-    - name: Criar realm
-      shell: "curl   -d 'client_id=admin-cli'   -d 'username=admin'   -d 'password=aHT7dbw57M3MRFCC'   -d grant_type=password   'https://dev-sso.dmcardapi.com.br/realms/master/protocol/openid-connect/token'"
+    - name: Run a curl request to login and get jwt token
+      command:  curl   -d 'client_id=admin-cli'   -d 'username=admin'   -d 'password=aHT7dbw57M3MRFCC'   -d grant_type=password   'https://dev-sso.dmcardapi.com.br/realms/master/protocol/openid-connect/token'
       register: login_response
+
     - name: Print the jwt token
       debug:
         var: (login_response.stdout|from_json).jwt   
