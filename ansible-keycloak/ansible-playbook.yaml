@@ -10,8 +10,8 @@
   tasks:
     - name: Run a curl request to login and get jwt token
       command:  curl   -d 'client_id=admin-cli'   -d 'username=admin'   -d 'password=aHT7dbw57M3MRFCC'   -d grant_type=password   'https://dev-sso.dmcardapi.com.br/realms/master/protocol/openid-connect/token'
-      register: (login_response.stdout|from_json).access_token
+      register: (login_response|from_json).access_token
 
     - name: Print the jwt token
       debug:
-        var: login_response
+        var: (login_response|from_json).access_token
