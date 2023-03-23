@@ -32,8 +32,9 @@
       uri:
         url: "{{ keycloak_url }}/admin/realms"
         method: POST
-        user: "{{ admin_user }}"
+        user: "{{ admin_username }}"
         password: "{{ admin_password }}"
+        grant_type: password
         body_format: json
         body:
           enabled: "{{ realm_enabled }}"
