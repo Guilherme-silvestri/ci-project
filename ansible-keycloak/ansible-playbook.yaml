@@ -1,7 +1,7 @@
 - name: Criar realm no Keycloak via REST API
   hosts: localhost
   vars:
-    keycloak_host: "https://dev-sso.dmcardapi.com.br"
+    keycloak_host: "dev-sso.dmcardapi.com.br"
     keycloak_admin_username: "admin"
     keycloak_admin_password: "aHT7dbw57M3MRFCC"
     realm_name: "TESTE-DEVOPS"
