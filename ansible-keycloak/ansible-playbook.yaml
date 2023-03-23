@@ -34,6 +34,7 @@
         url: "{{ keycloak_url }}/admin/realms"
         method: POST
         body_format: json
+        status_code: 201, 208
         body:
           realm: "{{ realm_name }}"
           displayName: "{{ realm_display_name }}"
