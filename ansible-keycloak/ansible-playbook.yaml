@@ -11,13 +11,16 @@
   tasks:
     - name: Autenticação no Keycloak
       uri:
-        url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
+        url: "{{ keycloak_url }}/auth/realms/master/protocol/openid-connect/token"
         method: POST
-        body_format: json
+        body_format: form-urlencoded
         body:
           grant_type: "password"
           username: "{{ admin_username }}"
           password: "{{ admin_password }}"
           client_id: "admin-cli"
-        validate_certs: no
-
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+        return_content: yes
+        register: keycloak_token
+        
