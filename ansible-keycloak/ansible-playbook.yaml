@@ -6,12 +6,13 @@
     keycloak_admin_username: "admin"
     keycloak_admin_password: "aHT7dbw57M3MRFCC"
     realm_name: "TESTE-DEVOPS"
+    master_realm: master
     realm_enabled: true
     realm_display_name: "TESTE-DEVOPS"
   tasks:
   - name: Obter token de acesso
     get_url:
-      url: "http://{{ keycloak_host }}:{{ keycloak_port }}/auth/realms/{{ master_realm }}/protocol/openid-connect/token"
+      url: "{{ keycloak_host }}/admin/realms/{{ master_realm }}/protocol/openid-connect/token"
       method: POST
       headers:
         'Content-Type': 'application/x-www-form-urlencoded'
