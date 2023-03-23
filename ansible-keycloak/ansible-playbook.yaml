@@ -6,8 +6,8 @@
     keycloak_url: "https://dev-sso.dmcardapi.com.br"
     admin_username: "admin"
     admin_password: "aHT7dbw57M3MRFCC"
-    realm_name: "TESTE-DEVOPS1"
-    realm_display_name: "TESTE-DEVOPS1"
+    realm_name: "TESTE-DEVOPS2"
+    realm_display_name: "TESTE-DEVOPS2"
 
   tasks:
     - name: Autenticação no Keycloak
@@ -34,7 +34,7 @@
         url: "{{ keycloak_url }}/admin/realms"
         method: POST
         body_format: json
-        status_code: 201, 208
+        status_code: 201, 208, 200
         body:
           realm: "{{ realm_name }}"
           displayName: "{{ realm_display_name }}"
