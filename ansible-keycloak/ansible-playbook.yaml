@@ -6,8 +6,8 @@
     keycloak_url: "https://dev-sso.dmcardapi.com.br"
     admin_username: "admin"
     admin_password: "aHT7dbw57M3MRFCC"
-    realm_name: "TESTE-DEVOPS"
-    realm_display_name: "TESTE-DEVOPS"
+    realm_name: "TESTE-DEVOPS1"
+    realm_display_name: "TESTE-DEVOPS1"
 
   tasks:
     - name: Autenticação no Keycloak
