@@ -9,21 +9,6 @@
     realm_display_name: "TESTE-DEVOPS"
   tasks:
     - name: Criar realm
-      uri:
-        url: "{{ keycloak_host }}/realms/master/protocol/openid-connect/token"
-        method: POST
-        force_basic_auth: yes
-        validate_certs: yes
-        body-format: raw
-        body:
-          client_id: admin-cli
-          username: "{{ keycloak_admin_username }}"
-          password: "{{ keycloak_admin_password }}"
-          grant_type: password
-      register: keycloak_auth_result
-
-    - name: Verificar resposta
-      debug:
-        var: keycloak_auth_result
+      shell: "curl   -d 'client_id=admin-cli'   -d 'username=admin'   -d 'password=aHT7dbw57M3MRFCC'   -d grant_type=password   'https://dev-sso.dmcardapi.com.br/realms/master/protocol/openid-connect/token'"
 
 
