@@ -11,7 +11,7 @@
     - name: Criar realm
       uri:
         url: "{{ keycloak_host }}/realms/master/protocol/openid-connect/token"
-        method: POST
+        method: GET
         body_format: json
         body:
           client_id: admin-cli
