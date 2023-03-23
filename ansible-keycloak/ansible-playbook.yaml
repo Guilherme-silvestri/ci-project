@@ -34,13 +34,14 @@
         method: POST
         user: "{{ admin_username }}"
         password: "{{ admin_password }}"
-        grant_type: password
-        body_format: json
+
         body:
           enabled: "{{ realm_enabled }}"
           id: "{{ realm_name }}"
           realm: "{{ realm_name }}"
           displayName: "{{ realm_name }}"
+          grant_type: password
+          body_format: json
       register: response
     - name: Verificar resposta
       debug:
