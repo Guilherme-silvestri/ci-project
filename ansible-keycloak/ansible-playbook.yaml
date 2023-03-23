@@ -7,42 +7,17 @@
     admin_username: "admin"
     admin_password: "aHT7dbw57M3MRFCC"
     realm_name: "TESTE-DEVOPS"
-    realm_enabled: true
 
   tasks:
-    - name: Obter token de acesso
+    - name: Autenticação no Keycloak
       uri:
-        url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
+        url: "{{ keycloak_host }}/realms/master/protocol/openid-connect/token"
         method: POST
-        body_format: form-urlencoded
+        body_format: json
         body:
           grant_type: "password"
-          client_id: "admin-cli"
           username: "{{ admin_username }}"
           password: "{{ admin_password }}"
-        headers:
-          Content-Type: "application/x-www-form-urlencoded"
-        return_content: yes
-      register: token_response
-
-    - name: Mostrar token de acesso
-      debug:
-        var: token_response.json.access_token
-    - name: Criar realm
-      uri:
-        url: "{{ keycloak_url }}/admin/realms"
-        method: POST
-        user: "{{ admin_username }}"
-        password: "{{ admin_password }}"
-
-        body:
-          enabled: "{{ realm_enabled }}"
-          id: "{{ realm_name }}"
-          realm: "{{ realm_name }}"
-          displayName: "{{ realm_name }}"
-          grant_type: password
-          body_format: json
-      register: response
-    - name: Verificar resposta
-      debug:
-        var: response
+          client_id: "admin-cli"
+        validate_certs: no
+        register: keycloak_token
