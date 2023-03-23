@@ -10,8 +10,8 @@
   tasks:
     - name: Authentication in Keycloak
       command:  curl   -d 'client_id=admin-cli'   -d 'username={{ keycloak_admin_username }}'   -d 'password={{ keycloak_admin_password }}'   -d grant_type=password   '{{ keycloak_host }}/realms/master/protocol/openid-connect/token'
-      register: login_response
+      register: login_response.stdout_lines
 
     - name: Print the jwt token
       debug:
-        var: login_response
+        var: login_response.stdout_lines
