@@ -3,25 +3,27 @@
   gather_facts: no
 
   vars:
-    keycloak_url: "https://dev-sso.dmcardapi.com.br/auth"
+    keycloak_url: "https://dev-sso.dmcardapi.com.br"
     admin_username: "admin"
     admin_password: "aHT7dbw57M3MRFCC"
     realm_name: "TESTE-DEVOPS"
 
   tasks:
     - name: Obter token de acesso
-      get_url:
+      uri:
         url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
         method: POST
-        headers:
-          Content-Type: "application/x-www-form-urlencoded"
-        data:
+        body_format: form-urlencoded
+        body:
           grant_type: "password"
           client_id: "admin-cli"
           username: "{{ admin_username }}"
           password: "{{ admin_password }}"
-        dest: token.json
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+        return_content: yes
+      register: token_response
 
     - name: Mostrar token de acesso
       debug:
-        var: token.json.access_token
+        var: token_response.json.access_token
