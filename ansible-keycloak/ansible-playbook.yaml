@@ -1,27 +1,26 @@
-- name: Autenticar e obter token de acesso do Keycloak
+- name: Autenticar no Keycloak
   hosts: localhost
-  gather_facts: false
+  gather_facts: no
 
   vars:
-    keycloak_url: "https://dev-sso.dmcardapi.com.br/admin/realms/master/protocol/openid-connect/token"
-
-    username: "admin"
-    password: "aHT7dbw57M3MRFCC"
+    keycloak_url: "https://dev-sso.dmcardapi.com.br/auth"
+    admin_username: "admin"
+    admin_password: "aHT7dbw57M3MRFCC"
 
   tasks:
     - name: Obter token de acesso
       get_url:
-        url: "{{ keycloak_url }}"
+        url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
         method: POST
         headers:
           Content-Type: "application/x-www-form-urlencoded"
-        validate_certs: false
-        data:
+        body:
           grant_type: "password"
-          username: "{{ username }}"
-          password: "{{ password }}"
-      register: response
+          client_id: "admin-cli"
+          username: "{{ admin_username }}"
+          password: "{{ admin_password }}"
+        dest: token.json
 
-    - name: Mostrar resposta
+    - name: Mostrar token de acesso
       debug:
-        var: response.json()['access_token']
+        var: token.json.access_token
