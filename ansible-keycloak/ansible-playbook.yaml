@@ -1,6 +1,8 @@
 ---
 - name: Teste de login no Keycloak
   hosts: localhost
+  collections:
+    - middleware_automation.keycloak
   gather_facts: no
 
   vars:
