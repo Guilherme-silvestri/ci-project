@@ -1,4 +1,4 @@
-- hosts: ec2-instance
+- hosts: rabbitmq-dev
   become: yes
   vars:
     rabbitmq_user: admin
