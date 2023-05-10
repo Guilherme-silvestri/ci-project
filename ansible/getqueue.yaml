@@ -1,9 +1,11 @@
-- hosts: 10.32.142.174
-  become: yes
+- name: Verificar filas RabbitMQ
+  hosts: localhost
+  gather_facts: no
   vars:
-    rabbitmq_user: admin
-    rabbitmq_password: aHT7dbw57M3MRFCC
-    rabbitmq_queues:
+    rabbitmq_api_url: "https://lb-rabbitmq-dev-31659ae68f361520.elb.sa-east-1.amazonaws.com/api/queues"
+    rabbitmq_username: "admin"
+    rabbitmq_password: "aHT7dbw57M3MRFCC"
+    queues:
       - comp_cashin
       - comp_statement
       - create_device_token
@@ -20,14 +22,20 @@
       - pix_credit
       - pix_credit_description
       - ted_reversal
-  tasks:
-  - name: Instalar o RabbitMQ
-    apt:
-      name: rabbitmq-server
-      state: present
 
-  - name: Iniciar o serviço do RabbitMQ
-    service:
-      name: rabbitmq-server
-      state: started
-      enabled: yes
+  tasks:
+    - name: Verificar filas RabbitMQ
+      uri:
+        url: "{{ rabbitmq_api_url }}"
+        method: GET
+        headers:
+          Content-Type: "application/json"
+        timeout: 30
+        status_code:
+          - 200
+          - 401
+          - 404
+        validate_certs: no
+        user: "{{ rabbitmq_username }}"
+        password: "{{ rabbitmq_password }}"
+      register: rabbitmq_queues
