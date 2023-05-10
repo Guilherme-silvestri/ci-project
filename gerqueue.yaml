@@ -1,0 +1,42 @@
+- hosts: rabbitmq-server
+  become: yes
+  vars:
+    rabbitmq_user: admin
+    rabbitmq_password: my_password
+    queues:
+      - comp_cashin
+      - comp_statement
+      - create_device_token
+      - create_device_token_delay
+      - create_device_token_dlx
+      - credit_analisys
+      - credit_analisys_delay
+      - credit_analisys_dlx
+      - notification_http
+      - notify_email
+      - notify_push
+      - notify_sms
+      - pix_chargeback
+      - pix_credit
+      - pix_credit_description
+      - ted_reversal
+  tasks:
+    - name: Verificar se todas as filas existem
+      rabbitmq_queue:
+        queue: "{{ item }}"
+        state: list
+        login_user: "{{ rabbitmq_user }}"
+        login_password: "{{ rabbitmq_password }}"
+      register: queue_info
+      with_items: "{{ queues }}"
+      ignore_errors: yes
+    - name: Criar filas que não existem
+      rabbitmq_queue:
+        queue: "{{ item }}"
+        state: present
+        durable: true
+        auto_delete: false
+        login_user: "{{ rabbitmq_user }}"
+        login_password: "{{ rabbitmq_password }}"
+      with_items: "{{ queues }}"
+      when: "'{0}' not in queue_info.stdout_lines | map(attribute='name') | list"
