@@ -1,9 +1,9 @@
-- hosts: rabbitmq-server
+- hosts: ec2-instance
   become: yes
   vars:
     rabbitmq_user: admin
-    rabbitmq_password: my_password
-    queues:
+    rabbitmq_password: aHT7dbw57M3MRFCC
+    rabbitmq_queues:
       - comp_cashin
       - comp_statement
       - create_device_token
@@ -21,22 +21,52 @@
       - pix_credit_description
       - ted_reversal
   tasks:
-  - name: Verificar se todas as filas existem
-    rabbitmq_queue:
-      queue: "{{ item }}"
-      state: list
-      login_user: "{{ rabbitmq_user }}"
-      login_password: "{{ rabbitmq_password }}"
-    register: queue_info
-    with_items: "{{ queues }}"
-    ignore_errors: yes
-  - name: Criar filas que não existem
-    rabbitmq_queue:
-      queue: "{{ item }}"
+  - name: Instalar o RabbitMQ
+    apt:
+      name: rabbitmq-server
       state: present
-      durable: true
-      auto_delete: false
+
+  - name: Iniciar o serviço do RabbitMQ
+    service:
+      name: rabbitmq-server
+      state: started
+      enabled: yes
+
+  - name: Criação do usuário do RabbitMQ
+    rabbitmq_user:
+      user: "{{ rabbitmq_user }}"
+      password: "{{ rabbitmq_password }}"
+      tags: administrator
+      vhost: /
+      configure_priv: ".*"
+      read_priv: ".*"
+      write_priv: ".*"
+
+  - name: Instalar plugin de console web do RabbitMQ
+    rabbitmq_plugin:
+      name: rabbitmq_management
+      state: enabled
+
+  - name: Reiniciar o serviço do RabbitMQ
+    systemd:
+      name: rabbitmq-server
+      state: restarted
+
+
+  - name: Reiniciar o serviço do RabbitMQ
+    systemd:
+      name: rabbitmq-server
+      state: restarted
+
+  - name: Criar filas no RabbitMQ
+    rabbitmq_queue:
       login_user: "{{ rabbitmq_user }}"
       login_password: "{{ rabbitmq_password }}"
-    with_items: "{{ queues }}"
-    when: "'{0}' not in queue_info.stdout_lines | map(attribute='name') | list"
+      vhost: /
+      state: present
+      name: "{{ item }}"
+      durable: yes
+      auto_delete: no
+      arguments:
+        x-queue-type: classic
+    loop: "{{ rabbitmq_queues }}"
