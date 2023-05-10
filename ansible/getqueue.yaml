@@ -1,4 +1,4 @@
-- hosts: rabbitmq-dev
+- hosts: 10.32.142.174
   become: yes
   vars:
     rabbitmq_user: admin
