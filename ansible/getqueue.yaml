@@ -2,26 +2,11 @@
   hosts: localhost
   gather_facts: no
   vars:
-    rabbitmq_api_url: "https://lb-rabbitmq-dev-31659ae68f361520.elb.sa-east-1.amazonaws.com/api/queues"
-    rabbitmq_username: "admin"
-    rabbitmq_password: "aHT7dbw57M3MRFCC"
+    rabbitmq_api_url: ""
+    rabbitmq_username: ""
+    rabbitmq_password: ""
     queues:
-      - comp_cashin
-      - comp_statement
-      - create_device_token
-      - create_device_token_delay
-      - create_device_token_dlx
-      - credit_analisys
-      - credit_analisys_delay
-      - credit_analisys_dlx
-      - notification_http
-      - notify_email
-      - notify_push
-      - notify_sms
-      - pix_chargeback
-      - pix_credit
-      - pix_credit_description
-      - ted_reversal
+
 
   tasks:
     - name: Verificar filas RabbitMQ
