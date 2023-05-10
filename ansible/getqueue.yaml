@@ -39,3 +39,4 @@
         user: "{{ rabbitmq_username }}"
         password: "{{ rabbitmq_password }}"
       register: rabbitmq_queues
+    - debug: var=rabbitmq_queues.stdout_lines
