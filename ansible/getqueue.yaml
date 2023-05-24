@@ -2,7 +2,7 @@
   hosts: localhost
   tasks:
     - name: Obter informações da credential rabbitmq
-      awx.awx.awx_credential_info:
+      tower_credential_info:
         name: rabbitmq
       register: credential_info
 
