@@ -1,11 +1,8 @@
 - name: Exemplo de obtenção de informações da credential
   hosts: localhost
   tasks:
-    - name: Obter informações da credential rabbitmq
-      awx_credential:
-        name: rabbitmq
-      register: credential_info
-
     - name: Exibir informações da credential
       debug:
-        msg: "Usuário: {{ credential_info.username }}, Senha: {{ credential_info.inputs.password }}"
+        msg: "Usuário: {{ rabbitmq_credential.username }}, Senha: {{ rabbitmq_credential.password }}"
+  vars:
+    rabbitmq_credential: "{{ lookup('awx_vault', 'rabbitmq_credential') }}"
