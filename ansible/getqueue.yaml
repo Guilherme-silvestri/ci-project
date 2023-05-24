@@ -1,7 +1,11 @@
-- name: Exibir informações da credencial
+- name: Exibir valores das variáveis
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Debug credentials
+    - name: Mostrar valor da variável 'user'
       debug:
-        var: rabbitmq
+        var: user
+
+    - name: Mostrar valor da variável 'pass'
+      debug:
+        var: passwd
