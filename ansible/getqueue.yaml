@@ -5,5 +5,5 @@
       debug:
         msg: "Executando tarefa usando a credencial MyMachineCredential"
       vars:
-        ansible_user: "{{ lookup('cred', 'MyMachineCredential.username') }}"
-        ansible_password: "{{ lookup('cred', 'MyMachineCredential.password') }}"
+        ansible_user: "{{ lookup( 'MyMachineCredential.username') }}"
+        ansible_password: "{{ lookup( 'MyMachineCredential.password') }}"
