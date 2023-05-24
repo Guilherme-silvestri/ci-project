@@ -1,23 +1,9 @@
----
-- name: Listar filas no RabbitMQ
+- name: Exemplo de utilização de credentials
   hosts: localhost
   vars:
-    rabbitmq_user: "{{ development-rabbitmq.username }}"
-    rabbitmq_password: "{{ development-rabbitmq.password }}"
+    rabbitmq_user: "{{ credentials_rabbitmq.username }}"
+    rabbitmq_password: "{{ credentials_rabbitmq.password }}"
   tasks:
-    - name: Autenticar no RabbitMQ
-      uri:
-        url: https://direct-dev.dmcardapi.com.br/rabbitmq/api/queues
-        method: GET
-        headers:
-          Authorization: "Basic {{ '{{ rabbitmq_user }}:{{ rabbitmq_password }}' | b64encode }}"
-        return_content: yes
-      register: response
-
-    - name: Extrair nomes das filas
-      set_fact:
-        queue_names: "{{ response.json | map(attribute='name') | list }}"
-
-    - name: Exibir nomes das filas
+    - name: Exibir usuário e senha
       debug:
-        var: queue_names
+        msg: "Usuário: {{ rabbitmq_user }}, Senha: {{ rabbitmq_password }}"
