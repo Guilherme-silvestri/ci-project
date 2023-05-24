@@ -4,4 +4,4 @@
   tasks:
     - name: Debug credentials
       debug:
-        var: credentials
+        var: rabbitmq
