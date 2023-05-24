@@ -15,3 +15,7 @@
     - name: Extrair nomes das filas
       set_fact:
         queue_names: "{{ queues_response.json | map(attribute='name') | list }}"
+  
+    - name: Exibir nomes das filas
+      debug:
+        var: queue_names
