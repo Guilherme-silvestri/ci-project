@@ -1,14 +1,16 @@
 ---
 - name: Listar filas no RabbitMQ
   hosts: localhost
-
+  vars:
+    rabbitmq_user: "{{ development-rabbitmq.username }}"
+    rabbitmq_password: "{{ development-rabbitmq.password }}"
   tasks:
     - name: Autenticar no RabbitMQ
       uri:
         url: https://direct-dev.dmcardapi.com.br/rabbitmq/api/queues
         method: GET
         headers:
-          Authorization: "Basic {{ 'admin:aHT7dbw57M3MRFCC' | b64encode }}"
+          Authorization: "Basic {{ '{{ rabbitmq_user }}:{{ rabbitmq_password }}' | b64encode }}"
         return_content: yes
       register: response
 
