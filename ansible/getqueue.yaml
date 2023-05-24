@@ -1,6 +1,21 @@
-- name: Exemplo de utilização de credentials
+---
+- name: Listar filas no RabbitMQ
   hosts: localhost
+
   tasks:
-    - name: Exibir usuário e senha
+    - name: Autenticar no RabbitMQ
+      uri:
+        url: "{{ rabbitmq_url }}/rabbitmq/api/queues"
+        method: GET
+        headers:
+          Authorization: "Basic {{ rabbitmq_user + ':' + rabbitmq_passwd | b64encode }}"
+        return_content: yes
+      register: response
+
+    - name: Extrair nomes das filas
+      set_fact:
+        queue_names: "{{ response.json | map(attribute='name') | list }}"
+
+    - name: Exibir nomes das filas
       debug:
-        msg: "Usuário: {{ rabbitmq_user }}, Senha: {{ passwd }}"
+        var: queue_names
