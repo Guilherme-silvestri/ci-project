@@ -8,7 +8,7 @@
         url: "{{ rabbitmq_url }}/rabbitmq/api/queues"
         method: GET
         headers:
-          Authorization: "Basic ({{ rabbitmq_user }}:{{ rabbitmq_passwd }} | | b64encode)"
+          Authorization: "{{ credentials }}"
         return_content: yes
       register: queues_response
 
