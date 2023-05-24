@@ -1,3 +1,7 @@
 - name: Exibir informações da credencial
-  debug:
-    var: credentials
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Debug credentials
+      debug:
+        var: credentials
