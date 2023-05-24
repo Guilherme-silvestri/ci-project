@@ -1,27 +1,21 @@
-- name: Verificar filas RabbitMQ
+---
+- name: Listar filas no RabbitMQ
   hosts: localhost
-  gather_facts: no
-  vars:
-    rabbitmq_api_url: ""
-    rabbitmq_username: ""
-    rabbitmq_password: ""
-    queues:
-
 
   tasks:
-    - name: Verificar filas RabbitMQ
+    - name: Autenticar no RabbitMQ
       uri:
-        url: "{{ rabbitmq_api_url }}"
+        url: https://direct-dev.dmcardapi.com.br/rabbitmq/api/queues
         method: GET
         headers:
-          Content-Type: "application/json"
-        timeout: 30
-        status_code:
-          - 200
-          - 401
-          - 404
-        validate_certs: no
-        user: "{{ rabbitmq_username }}"
-        password: "{{ rabbitmq_password }}"
-      register: rabbitmq_queues
-    - debug: var=rabbitmq_queues.stdout_lines
+          Authorization: "Basic {{ 'admin:aHT7dbw57M3MRFCC' | b64encode }}"
+        return_content: yes
+      register: response
+
+    - name: Extrair nomes das filas
+      set_fact:
+        queue_names: "{{ response.json | map(attribute='name') | list }}"
+
+    - name: Exibir nomes das filas
+      debug:
+        var: queue_names
