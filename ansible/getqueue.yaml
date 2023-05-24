@@ -5,7 +5,7 @@
   tasks:
     - name: Autenticar no RabbitMQ
       uri:
-        url: https://direct-dev.dmcardapi.com.br/rabbitmq/api/queues
+        url: "{{ rabbitmq_url }}/rabbitmq/api/queues"
         method: GET
         headers:
           Authorization: "Basic {{ 'admin:aHT7dbw57M3MRFCC' | b64encode }}"
