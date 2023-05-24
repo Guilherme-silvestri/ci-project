@@ -1,8 +1,9 @@
-- name: Exemplo de obtenção de informações da credential
+- name: Exemplo de tarefa usando credencial
   hosts: localhost
   tasks:
-    - name: Exibir informações da credential
+    - name: Tarefa que usa a credencial
       debug:
-        msg: "Usuário: {{ rabbitmq_credential.username }}, Senha: {{ rabbitmq_credential.password }}"
-  vars:
-    rabbitmq_credential: "{{ lookup('awx_vault', 'rabbitmq_credential') }}"
+        msg: "Executando tarefa usando a credencial MyMachineCredential"
+      vars:
+        ansible_user: "{{ lookup('cred', 'MyMachineCredential.username') }}"
+        ansible_password: "{{ lookup('cred', 'MyMachineCredential.password') }}"
