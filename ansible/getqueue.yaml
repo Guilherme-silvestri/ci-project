@@ -1,20 +1,17 @@
-- name: Listar filas no RabbitMQ
+---
+- name: Listar filas e enviar notificação para Teams
   hosts: localhost
 
   tasks:
     - name: Autenticar no RabbitMQ
       uri:
-        url: "{{ rabbitmq_url }}/rabbitmq/api/queues"
+        url: https://direct-dev.dmcardapi.com.br/rabbitmq/api/queues
         method: GET
         headers:
-          Authorization: "Basic {{ (admin + ':' + aHT7dbw57M3MRFCC) | b64encode }}"
+          Authorization: "Basic {{ 'admin:aHT7dbw57M3MRFCC' | b64encode }}"
         return_content: yes
-      register: response
+      register: queues_response
 
     - name: Extrair nomes das filas
       set_fact:
-        queue_names: "{{ response.json | map(attribute='name') | list }}"
-
-    - name: Exibir nomes das filas
-      debug:
-        var: queue_names
+        queue_names: "{{ queues_response.json | map(attribute='name') | list }}"
