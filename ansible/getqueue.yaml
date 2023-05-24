@@ -2,10 +2,10 @@
   hosts: localhost
   tasks:
     - name: Obter informações da credential rabbitmq
-      tower_credential_info:
-        name: rabbitmq
+      awx_facts:
+        credential_name: rabbitmq
       register: credential_info
 
     - name: Exibir informações da credential
       debug:
-        msg: "Usuário: {{ credential_info.credential.username }}, Senha: {{ credential_info.credential.password }}"
+        msg: "Usuário: {{ credential_info.credentials[0].inputs.username }}, Senha: {{ credential_info.credentials[0].inputs.password }}"
