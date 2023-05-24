@@ -1,11 +1,6 @@
-- name: Exibir valores das variáveis
+- name: Exemplo de utilização de credentials
   hosts: localhost
-  gather_facts: false
   tasks:
-    - name: Mostrar valor da variável 'user'
+    - name: Exibir usuário e senha
       debug:
-        var: user
-
-    - name: Mostrar valor da variável 'pass'
-      debug:
-        var: passwd
+        msg: "Usuário: {{ rabbitmq_user }}, Senha: {{ passwd }}"
