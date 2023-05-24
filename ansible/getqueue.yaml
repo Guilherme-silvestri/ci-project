@@ -1,8 +1,8 @@
 - name: Exemplo de utilização de credentials
   hosts: localhost
   vars:
-    rabbitmq_user: "{{ development-rabbitmq.username }}"
-    rabbitmq_password: "{{ development-rabbitmq.password }}"
+    rabbitmq_user: "{{ credentials['RabbitMQ Credentials'].username }}"
+    rabbitmq_password: "{{ credentials['RabbitMQ Credentials'].password }}"
   tasks:
     - name: Exibir usuário e senha
       debug:
